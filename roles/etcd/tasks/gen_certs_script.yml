@@ -7,6 +7,7 @@
     owner: kube
     mode: 0700
     recurse: yes
+  changed_when: no
 
 - name: "Gen_certs | create etcd script dir (on {{groups['etcd'][0]}})"
   file:
@@ -138,6 +139,7 @@
   when: (('calico-rr' in groups and inventory_hostname in groups['calico-rr']) or
         inventory_hostname in groups['k8s-cluster']) and
         sync_certs|default(false) and inventory_hostname not in groups['etcd']
+  changed_when: no
 
 - name: Gen_certs | Copy certs on nodes
   shell: "base64 -d <<< '{{etcd_node_certs.stdout|quote}}' | tar xz -C {{ etcd_cert_dir }}"
@@ -159,3 +161,4 @@
     owner: kube
     mode: 0640
     recurse: yes
+  changed_when: no

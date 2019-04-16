@@ -13,14 +13,20 @@
     src: "{{ local_release_dir }}/cni-plugins-{{ image_arch }}-{{ cni_version }}.tgz"
     dest: "/opt/cni/bin"
     mode: 0755
+    owner: kube
     remote_src: yes
+  changed_when: no
 
 - name: Weave | Create manifest
   template:
     src: weave-net.yml.j2
     dest: "{{ kube_config_dir }}/weave-net.yml"
+    owner: kube
+    mode: 0755
 
 - name: Weave | Fix nodePort for Weave
   template:
     src: 10-weave.conflist.j2
     dest: /etc/cni/net.d/10-weave.conflist
+    owner: kube
+    mode: 0755

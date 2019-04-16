@@ -15,6 +15,7 @@
     unsafe_writes: yes
     marker: "# Ansible inventory hosts {mark}"
   when: populate_inventory_to_hosts_file
+  changed_when: no
 
 - name: Hosts | populate kubernetes loadbalancer address into hosts file
   lineinfile:

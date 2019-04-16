@@ -39,6 +39,7 @@
   set_fact:
     gen_node_certs: |-
       {
+      {% set all_etcd_hosts = groups['k8s-cluster']|union(groups['etcd'])|union(groups['calico-rr']|default([]))|unique|sort -%}
       {% for host in all_etcd_hosts -%}
         {% set host_cert = "%s/%s-%s-key.pem"|format(etcd_cert_dir, cert_prefix, host) %}
         {% if host_cert in existing_certs -%}
@@ -58,4 +59,3 @@
       (not etcdcert_node.results[0].stat.exists|default(false)) or
       (not etcdcert_node.results[1].stat.exists|default(false)) or
       (etcdcert_node.results[1].stat.checksum|default('') != etcdcert_master.files|selectattr("path", "equalto", etcdcert_node.results[1].stat.path)|map(attribute="checksum")|first|default(''))
-

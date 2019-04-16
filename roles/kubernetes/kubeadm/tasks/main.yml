@@ -20,16 +20,19 @@
   register: kubeadm_ca_hash
   delegate_to: "{{ groups['kube-master'][0] }}"
   run_once: true
+  changed_when: no
 
 - name: Create kubeadm token for joining nodes with 24h expiration (default)
   command: "{{ bin_dir }}/kubeadm token create"
   run_once: true
   register: temp_token
   delegate_to: "{{ groups['kube-master'][0] }}"
+  changed_when: no
 
 - name: gets the kubeadm version
   command: "{{ bin_dir }}/kubeadm version -o short"
   register: kubeadm_output
+  changed_when: no
 
 - name: sets kubeadm api version to v1alpha1
   set_fact:
@@ -61,6 +64,7 @@
     dest: "{{ kube_config_dir }}/kubeadm-client.conf"
     backup: yes
   when: not is_kube_master
+  changed_when: no
   vars:
     kubeadm_token: "{{ temp_token.stdout }}"
 

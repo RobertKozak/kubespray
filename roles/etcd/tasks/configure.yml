@@ -47,6 +47,7 @@
 - name: Configure | reload systemd
   command: systemctl daemon-reload
   when: is_etcd_master
+  changed_when: no
 
 - name: Configure | Ensure etcd is running
   service:

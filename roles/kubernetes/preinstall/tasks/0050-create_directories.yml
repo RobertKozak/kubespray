@@ -28,6 +28,9 @@
     path: "{{ item }}"
     state: directory
     owner: kube
+    recurse: true
+    mode: 0755
+  register: cni_folders
   with_items:
     - "/etc/cni/net.d"
     - "/opt/cni/bin"

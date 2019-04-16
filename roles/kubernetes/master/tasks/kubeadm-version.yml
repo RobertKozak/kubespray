@@ -2,6 +2,7 @@
 - name: gets the kubeadm version
   command: "{{ bin_dir }}/kubeadm version -o short"
   register: kubeadm_output
+  changed_when: no
 
 - name: sets kubeadm api version to v1alpha1
   set_fact:
